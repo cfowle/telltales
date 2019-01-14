@@ -6,7 +6,7 @@ library(magrittr)
 library(stringr)
 library(lubridate)
 
-setwd("N:/General/80400_BD_LIFA/Individuals' Folders/Carrie/Spot Tasks/2019.01.08 Integration Test Example")
+setwd("~/code/telltales")
 data = read_csv("./clean_results_new.csv")
 data %<>% mutate(month = str_extract(date,"[a-zA-Z]*"),
               day = str_extract(date,"\\d{1,2}"),
@@ -16,7 +16,6 @@ data %<>% mutate(month = str_extract(date,"[a-zA-Z]*"),
 
 ui <- fluidPage(
   tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
     tags$link(href="https://fonts.googleapis.com/css?family=Raleway|Staatliches", rel="stylesheet")
   ),
   titlePanel("Sailing Stats"),
