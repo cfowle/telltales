@@ -5,14 +5,17 @@ library(dplyr)
 library(magrittr)
 library(stringr)
 library(lubridate)
+library(DT)
 
 setwd("~/code/telltales")
-data = read_csv("./clean_results_new.csv")
+data = read_csv("./source/clean_results_new.csv")
 data %<>% mutate(month = str_extract(date,"[a-zA-Z]*"),
               day = str_extract(date,"\\d{1,2}"),
               year = str_extract(date,"\\d{4}")) %>%
           mutate(clean_date = mdy(paste(month, day, ",", year))) %>%
           filter(!is.na(clean_date))
+
+classes = unique(data$class)
 
 ui <- fluidPage(
   tags$head(
@@ -26,9 +29,16 @@ ui <- fluidPage(
               plotOutput("plot"))),
            span(class = "element", column(3,
               checkboxGroupInput("checkGroup", label = h4("Classes"), 
-                                 choices = list("420", "phrf", "laser"),
-                                 selected = list("420", "phrf", "laser"))))
-  )
+                                 choices = classes,
+                                 selected = classes)))
+  ),
+  br(),
+  fluidRow(column(6, 
+                  h4("Most Active Teams"),
+                  DT::dataTableOutput("active_teams")),
+           column(6, 
+                  h4("Best Performing Teams"),
+                  DT::dataTableOutput("best_teams")))
 )
 
 
